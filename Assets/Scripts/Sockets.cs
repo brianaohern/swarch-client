@@ -9,7 +9,7 @@ using System.Threading;
 
 public class Sockets : MonoBehaviour {
 
-	const string SERVER_LOCATION = "255.255.255.255"; const int SERVER_PORT = 4645; //FILL THESE OUT FOR YOUR OWN SERVER
+	const string SERVER_LOCATION = "127.0.0.1"; const int SERVER_PORT = 4645; //FILL THESE OUT FOR YOUR OWN SERVER
 	
 	public TcpClient client;
 
@@ -25,15 +25,20 @@ public class Sockets : MonoBehaviour {
 	protected static bool threadState = false;
 	
 	public Queue recvBuffer;
-	
+
+	GameProcess process;
+
 	public Sockets()
 	{
 		connected = false;
 		recvBuffer = new Queue();
 	}
 	
-	public bool Connect ()
+	public bool Connect (string username, string password)
 	{
+		process = GameObject.Find("GameProcess").GetComponent<GameProcess>();
+
+		UnityEngine.Debug.Log("Connecting to server.");
 		UnityEngine.Debug.Log("Trying");
 		try
 		{
@@ -50,11 +55,14 @@ public class Sockets : MonoBehaviour {
 				t.Start();
 				threadState = true;
 				sw.AutoFlush = true;
+
+				UnityEngine.Debug.Log("Connected to server. Sending login info.");
+				process.SendLogin(username, password);
 			}
 		}
 		catch ( Exception ex )
 		{
-			print ( ex.Message + " : OnConnect");
+			UnityEngine.Debug.Log ( ex.Message + " : OnConnect");
 		}
 		
 		if ( client == null ) return false;
@@ -71,7 +79,7 @@ public class Sockets : MonoBehaviour {
 		}
 		catch ( Exception ex )
 		{
-			print ( ex.Message + " : OnDisconnect" );
+			UnityEngine.Debug.Log ( ex.Message + " : OnDisconnect");
 			return false;
 			
 		}
@@ -86,7 +94,7 @@ public class Sockets : MonoBehaviour {
 		}
 		catch ( Exception ex )
 		{
-			print ( ex.Message + ": OnTCPPacket" );
+			UnityEngine.Debug.Log ( ex.Message + ": OnTCPPacket" );
 		}	
 	}
 	
