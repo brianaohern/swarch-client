@@ -19,20 +19,9 @@ public class Login : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-<<<<<<< HEAD
 		playing = false;
 		username.text = string.Empty;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-=======
 		process = GameObject.Find("GameProcess").GetComponent<GameProcess>();
-		
-		playing = false;
-		username.text = string.Empty;
->>>>>>> 60f4aee6a07fe0e0b31ca4eb309ad3c6abccbab5
 	}
 
 	void OnGUI()
@@ -42,8 +31,6 @@ public class Login : MonoBehaviour {
 			GUI.backgroundColor = new Color(0, 0, 0);
 			GUI.Window (0, windowRect, windowFunction, "Login");
 		}
-<<<<<<< HEAD
-=======
 		if (playing) 
 		{
 			if ( GUI.Button( new Rect( 100, 200, 100, 20), "Disconnect"))
@@ -52,7 +39,6 @@ public class Login : MonoBehaviour {
 				playing = false;
 			}
 		}
->>>>>>> 60f4aee6a07fe0e0b31ca4eb309ad3c6abccbab5
 	}
 
 	void windowFunction(int windowID)
@@ -60,7 +46,6 @@ public class Login : MonoBehaviour {
 		usernameString = GUI.TextField(new Rect (Screen.width / 3, 2 * Screen.height / 5, Screen.width / 3, Screen.height / 9), usernameString, 10);
 		passwordString = GUI.PasswordField(new Rect (Screen.width / 3, 2 * Screen.height / 3, Screen.width / 3, Screen.height / 9), passwordString, '*');
 
-<<<<<<< HEAD
 		if(hashy.Contains(usernameString))
 		{
 			if(hashy.ContainsValue(passwordString))//this might not be the function I'm looking for
@@ -68,25 +53,19 @@ public class Login : MonoBehaviour {
 				//start game
 				if (GUI.Button(new Rect (Screen.width / 2, 4 * Screen.height / 5, Screen.width / 9, Screen.height / 12), "Login")) 
 				{
-					username.text = ("Username: " + usernameString);
-					playing = true;
+					username.text = "Signing in...";
+					if ( process.returnSocket().Connect() )
+					{
+						playing = true;
+						username.text = ("Username: " + usernameString);
+					}
+					else username.text = "Connect Failed";
 				}
 			}
 			else
 			{
 				//take back to login screen
 			}
-=======
-		if (GUI.Button(new Rect (Screen.width / 2, 4 * Screen.height / 5, Screen.width / 9, Screen.height / 12), "Login")) 
-		{
-			username.text = "Signing in...";
-			if ( process.returnSocket().Connect() )
-			{
-				playing = true;
-				username.text = ("Username: " + usernameString);
-			}
-			else username.text = "Connect Failed";
->>>>>>> 60f4aee6a07fe0e0b31ca4eb309ad3c6abccbab5
 		}
 		else //add the username/password combo to the hashtable
 		{
