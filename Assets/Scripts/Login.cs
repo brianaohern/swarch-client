@@ -11,6 +11,7 @@ public class Login : MonoBehaviour {
 	public static bool playing;
 	private string usernameString = string.Empty;
 	private string passwordString = string.Empty;
+	private int passwordHash = 0;
 
 	private Rect windowRect = new Rect(0, 0, Screen.width, Screen.height);
 
@@ -45,9 +46,11 @@ public class Login : MonoBehaviour {
 		usernameString = GUI.TextField(new Rect (Screen.width / 3, 2 * Screen.height / 5, Screen.width / 3, Screen.height / 9), usernameString, 10);
 		passwordString = GUI.PasswordField(new Rect (Screen.width / 3, 2 * Screen.height / 3, Screen.width / 3, Screen.height / 9), passwordString, '*');
 
+		passwordHash = passwordString.GetHashCode();
+
 		if (GUI.Button(new Rect (Screen.width / 2, 4 * Screen.height / 5, Screen.width / 9, Screen.height / 12), "Login")){
 			username.text = "Signing in...";
-			if ( process.returnSocket().Connect(usernameString, passwordString) )
+			if ( process.returnSocket().Connect(usernameString, passwordHash.ToString()) )
 			{
 			}
 			else username.text = "Connect Failed";

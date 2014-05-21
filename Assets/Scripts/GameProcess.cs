@@ -10,6 +10,12 @@ public class GameProcess : MonoBehaviour {
 	public int clientNumber;
 	public bool startGame = false;
 
+	public Player1 p1;
+	public Player2 p2;
+
+	public GameObject[] players;
+	public GameObject[] pellets;
+
 	//PRIVATE MEMBERS
 	private Sockets socks;
 	private string buffer;
@@ -19,7 +25,27 @@ public class GameProcess : MonoBehaviour {
 	void Start () 
 	{
 		socks = new Sockets();
-		
+
+		// Players
+		players = new GameObject[2];
+
+		players[0] = GameObject.Find("Player1");
+		players[1] = GameObject.Find("Player2");
+
+		p1 = players[0].GetComponent<Player1>();
+		p2 = players[1].GetComponent<Player2>();
+
+		// Pellets
+		try
+		{
+			pellets = GameObject.FindGameObjectsWithTag("Pellet");
+		}
+		catch (Exception ex)
+		{
+			print ( ex.Message + ": Exception when filling pellet array");
+		}
+
+		// GUI
 		gui = GameObject.Find("LoginScreen").GetComponent<Login>();
 	}
 	
@@ -67,6 +93,39 @@ public class GameProcess : MonoBehaviour {
 						Login.playing = true;
 					}
 					break;
+				case "player": // player & <client number> & <x position> & <z position> & <size>
+
+					tempBuffer = buffer.Split('&')[1];
+
+					// Set player position
+					players[Convert.ToInt32(tempBuffer) - 1].transform.position =
+						new Vector3(Convert.ToSingle(buffer.Split('&')[2]),
+						            0,
+						            Convert.ToSingle(buffer.Split('&')[3]));
+
+					players[Convert.ToInt32(tempBuffer) - 1].transform.localScale =
+						new Vector3(Convert.ToSingle(buffer.Split('&')[4]),
+						            Convert.ToSingle(buffer.Split('&')[4]),
+						            Convert.ToSingle(buffer.Split('&')[4]));
+
+					if (tempBuffer == "1")
+					{
+						p1.speed = Convert.ToSingle(buffer.Split('&')[5]);
+					}
+					else if (tempBuffer == "2")
+					{
+						p2.speed = Convert.ToSingle(buffer.Split('&')[5]);
+					}
+
+					break;
+
+				case "pellet":
+					tempBuffer = buffer.Split('&')[1];
+					pellets[Convert.ToInt32(tempBuffer)].transform.position =
+						new Vector3(Convert.ToSingle(buffer.Split('&')[2]),
+						            0,
+						            Convert.ToSingle(buffer.Split('&')[3]));
+					break;
 				}
 				socks.recvBuffer.Dequeue();
 			}
@@ -95,5 +154,19 @@ public class GameProcess : MonoBehaviour {
 			print ( ex.Message + ": onSendScore");
 		}
 		Debug.Log("Sent login information to server.");
+	}
+
+	public void SendDirectionChange(int direction) {
+		Debug.Log("In SendDirectionChange function");
+		try
+		{
+			socks.SendTCPPacket("direction&" + direction);
+			Debug.Log("Player direction change information sent to server");
+		}
+		catch (Exception ex)
+		{
+			print ( ex.Message + ": onSendDirectionChange");
+		}
+		Debug.Log("Sent direction change information to server.");
 	}
 }
