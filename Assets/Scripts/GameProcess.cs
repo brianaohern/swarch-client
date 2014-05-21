@@ -119,6 +119,35 @@ public class GameProcess : MonoBehaviour {
 
 					break;
 
+				case "score":
+					tempBuffer = buffer.Split('&')[1];
+					if (tempBuffer == "1")
+					{
+						tempBuffer = buffer.Split('&')[2];
+						p1.points += Convert.ToInt32(tempBuffer);
+					}
+					else if (tempBuffer == "2")
+					{
+						tempBuffer = buffer.Split('&')[2];
+						p2.points += Convert.ToInt32(tempBuffer);
+					}
+					break;
+
+				case "winner":
+					tempBuffer = buffer.Split('&')[1];
+					if (tempBuffer == "1")
+					{
+						p1.scoreText.text = "WINNER";
+						p2.scoreText.text = "LOSER";
+					}
+					else if (tempBuffer == "2")
+					{
+						p1.scoreText.text = "LOSER";
+						p2.scoreText.text = "WINNER";
+					}
+					startGame = false;
+					break;
+
 				case "pellet":
 					tempBuffer = buffer.Split('&')[1];
 					pellets[Convert.ToInt32(tempBuffer)].transform.position =

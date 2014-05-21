@@ -11,9 +11,13 @@ public class Player2 : MonoBehaviour {
 	private int direction;
 
 	public float speed = 5; // 5 per second
-	
+
+	public GUIText scoreText;
+
 	// Use this for initialization
 	void Start () {
+		scoreText.text = "";
+
 		this.renderer.enabled = true;
 		process = GameObject.Find("GameProcess").GetComponent<GameProcess>();
 
@@ -24,6 +28,8 @@ public class Player2 : MonoBehaviour {
 	void Update () {
 		if(process.startGame)
 		{
+			scoreText.text = "P2 - " + points;
+
 			if (process.clientNumber == 2)
 			{
 				if (Input.GetKeyDown(KeyCode.W))
