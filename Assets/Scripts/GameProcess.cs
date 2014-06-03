@@ -65,11 +65,15 @@ public class GameProcess : MonoBehaviour {
 					if (tempBuffer == "player 1")
 					{
 						clientNumber = 1;
+						players[0].renderer.material.color = new Color(255,0,0);
+						players[1].renderer.material.color = new Color(0,0,255);
 						Debug.Log("Connected as player 1.");
 					}
 					else if (tempBuffer == "player 2")
 					{
 						clientNumber = 2;
+						players[0].renderer.material.color = new Color(0,0,255);
+						players[1].renderer.material.color = new Color(255,0,0);
 						Debug.Log("Connected as player 2.");
 					}
 					else if (tempBuffer == "start")
