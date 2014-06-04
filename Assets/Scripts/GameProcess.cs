@@ -12,6 +12,7 @@ public class GameProcess : MonoBehaviour {
 
 	public Player1 p1;
 	public Player2 p2;
+	public Player3 p3;
 
 	public GameObject[] players;
 	public GameObject[] pellets;
@@ -27,13 +28,15 @@ public class GameProcess : MonoBehaviour {
 		socks = new Sockets();
 
 		// Players
-		players = new GameObject[2];
+		players = new GameObject[3];
 
 		players[0] = GameObject.Find("Player1");
 		players[1] = GameObject.Find("Player2");
+		players[2] = GameObject.Find("Player3");
 
 		p1 = players[0].GetComponent<Player1>();
 		p2 = players[1].GetComponent<Player2>();
+		p3 = players[2].GetComponent<Player3>();
 
 		// Pellets
 		try
@@ -67,6 +70,7 @@ public class GameProcess : MonoBehaviour {
 						clientNumber = 1;
 						players[0].renderer.material.color = new Color(255,0,0);
 						players[1].renderer.material.color = new Color(0,0,255);
+						players[2].renderer.material.color = new Color(0,0,255);
 						Debug.Log("Connected as player 1.");
 					}
 					else if (tempBuffer == "player 2")
@@ -74,8 +78,19 @@ public class GameProcess : MonoBehaviour {
 						clientNumber = 2;
 						players[0].renderer.material.color = new Color(0,0,255);
 						players[1].renderer.material.color = new Color(255,0,0);
+						players[2].renderer.material.color = new Color(0,0,255);
 						Debug.Log("Connected as player 2.");
 					}
+					else if (tempBuffer == "player 3")
+					{
+						clientNumber = 3;
+						players[0].renderer.material.color = new Color(0,0,255);
+						players[1].renderer.material.color = new Color(0,0,255);
+						players[2].renderer.material.color = new Color(255,0,0);
+						Debug.Log("Connected as player 2.");
+					}
+
+
 					else if (tempBuffer == "start")
 					{
 						startGame = true;
@@ -96,6 +111,8 @@ public class GameProcess : MonoBehaviour {
 							p1.username = tempBuffer;
 						} else if (clientNumber == 2) {
 							p2.username = tempBuffer;
+						} else if (clientNumber == 3) {
+							p3.username = tempBuffer;
 						}
 
 						Login.playing = true;
@@ -129,6 +146,12 @@ public class GameProcess : MonoBehaviour {
 						p2.direction = Convert.ToInt32(buffer.Split('&')[6]);
 						p2.username = buffer.Split('&')[7];
 					}
+					else if (tempBuffer == "3")
+					{
+						p3.speed = Convert.ToSingle(buffer.Split('&')[5]);
+						p3.direction = Convert.ToInt32(buffer.Split('&')[6]);
+						p3.username = buffer.Split('&')[7];
+					}
 
 					break;
 
@@ -144,6 +167,11 @@ public class GameProcess : MonoBehaviour {
 						tempBuffer = buffer.Split('&')[2];
 						p2.points += Convert.ToInt32(tempBuffer);
 					}
+					else if (tempBuffer == "3")
+					{
+						tempBuffer = buffer.Split('&')[2];
+						p3.points += Convert.ToInt32(tempBuffer);
+					}
 					break;
 
 				case "winner":
@@ -152,11 +180,19 @@ public class GameProcess : MonoBehaviour {
 					{
 						p1.scoreText.text = "WINNER";
 						p2.scoreText.text = "LOSER";
+						p3.scoreText.text = "LOSER";
 					}
 					else if (tempBuffer == "2")
 					{
 						p1.scoreText.text = "LOSER";
 						p2.scoreText.text = "WINNER";
+						p3.scoreText.text = "LOSER";
+					}
+					else if (tempBuffer == "3")
+					{
+						p1.scoreText.text = "LOSER";
+						p2.scoreText.text = "LOSER";
+						p3.scoreText.text = "WINNER";
 					}
 					startGame = false;
 					break;

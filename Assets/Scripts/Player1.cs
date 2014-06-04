@@ -10,11 +10,13 @@ public class Player1 : MonoBehaviour {
 	private enum Directions { up, down, left, right }
 	public int direction;
 
-	public float speed = 3; // 5 per second
+	public float speed = 3; // 3 per second
 
 	public GUIText scoreText;
 
 	public string username = "";
+
+	public bool signedIn = false;
 
 	// Use this for initialization
 	void Start () {
