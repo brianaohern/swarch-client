@@ -92,9 +92,14 @@ public class GameProcess : MonoBehaviour {
 					}
 					else
 					{
-						Debug.Log("User signing in.");
-						printGui("Username: " + tempBuffer);
+						if (clientNumber == 1) {
+							p1.username = tempBuffer;
+						} else if (clientNumber == 2) {
+							p2.username = tempBuffer;
+						}
+
 						Login.playing = true;
+						printGui("Waiting");
 					}
 					break;
 				case "player": // player & <client number> & <x position> & <z position> & <size>
@@ -115,10 +120,14 @@ public class GameProcess : MonoBehaviour {
 					if (tempBuffer == "1")
 					{
 						p1.speed = Convert.ToSingle(buffer.Split('&')[5]);
+						p1.direction = Convert.ToInt32(buffer.Split('&')[6]);
+						p1.username = buffer.Split('&')[7];
 					}
 					else if (tempBuffer == "2")
 					{
 						p2.speed = Convert.ToSingle(buffer.Split('&')[5]);
+						p2.direction = Convert.ToInt32(buffer.Split('&')[6]);
+						p2.username = buffer.Split('&')[7];
 					}
 
 					break;

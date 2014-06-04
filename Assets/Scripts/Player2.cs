@@ -8,11 +8,13 @@ public class Player2 : MonoBehaviour {
 	public GameProcess process;
 	
 	private enum Directions { up, down, left, right }
-	private int direction;
+	public int direction;
 
-	public float speed = 5; // 5 per second
+	public float speed = 3; // 5 per second
 
 	public GUIText scoreText;
+
+	public string username = "";
 
 	// Use this for initialization
 	void Start () {
@@ -28,7 +30,7 @@ public class Player2 : MonoBehaviour {
 	void Update () {
 		if(process.startGame)
 		{
-			scoreText.text = "P2 - " + points;
+			scoreText.text = username + "\n" + points;
 
 			if (process.clientNumber == 2)
 			{
@@ -73,7 +75,7 @@ public class Player2 : MonoBehaviour {
 				transform.Translate(new Vector3(distance,0,0));
 			}
 
-			if (transform.position.x < -30 || transform.position.x > 30 || transform.position.z < -15 || transform.position.z > 15)
+			if (transform.position.x < -15 || transform.position.x > 15 || transform.position.z < -15 || transform.position.z > 15)
 			{
 				renderer.enabled = false;
 			}

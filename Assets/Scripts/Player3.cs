@@ -1,7 +1,7 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
-public class Player1 : MonoBehaviour {
+public class Player3 : MonoBehaviour {
 
 	public int points = 0;
 	
@@ -9,20 +9,20 @@ public class Player1 : MonoBehaviour {
 	
 	private enum Directions { up, down, left, right }
 	public int direction;
-
+	
 	public float speed = 3; // 5 per second
-
+	
 	public GUIText scoreText;
 
 	public string username = "";
-
+	
 	// Use this for initialization
 	void Start () {
 		scoreText.text = "";
-
+		
 		this.renderer.enabled = true;
 		process = GameObject.Find("GameProcess").GetComponent<GameProcess>();
-
+		
 		direction = (int)Directions.down;
 	}
 	
@@ -31,8 +31,8 @@ public class Player1 : MonoBehaviour {
 		if(process.startGame)
 		{
 			scoreText.text = username + "\n" + points;
-
-			if (process.clientNumber == 1)
+			
+			if (process.clientNumber == 3)
 			{
 				if (Input.GetKeyDown(KeyCode.W))
 				{
@@ -55,7 +55,7 @@ public class Player1 : MonoBehaviour {
 					process.SendDirectionChange(direction);
 				}
 			}
-
+			
 			float distance = speed * Time.deltaTime;
 			
 			if (direction == (int)Directions.up)
@@ -74,7 +74,7 @@ public class Player1 : MonoBehaviour {
 			{
 				transform.Translate(new Vector3(distance,0,0));
 			}
-
+			
 			if (transform.position.x < -15 || transform.position.x > 15 || transform.position.z < -15 || transform.position.z > 15)
 			{
 				renderer.enabled = false;
